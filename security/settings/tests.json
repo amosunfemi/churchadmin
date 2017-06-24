@@ -1,0 +1,5 @@
+{
+  "PrivateKeyPath": "/Users/amosunsunday/Documents/Official/xtremepay/Sources/services/src/xtremepay.com/backoffice/security/settings/keys/private_key",
+  "PublicKeyPath": "/Users/amosunsunday/Documents/Official/xtremepay/Sources/services/src/xtremepay.com/backoffice/security/settings/keys/public_key.pub",
+  "JWTExpirationDelta": 72
+}

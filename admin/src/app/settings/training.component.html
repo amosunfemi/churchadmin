@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col">
+        <div widget class="card">
+            <div class="card-header">
+                <span><strong>TRAININGS</strong></span>
+
+            </div>
+            <div class="card-block widget-body">
+
+                <div class="col-md-9 col-12 offset-md-1">
+                    <form [formGroup]="trainingFormGroup">
+                        <div class="form-group row text-sm-right">
+                            <label class="col-sm-3 form-control-label m-t-5">Name</label>
+                            <div class="col-sm-8 text-left">
+                                <input class="form-control checking-field" type="text" [formControl]="tr_name" id="tr_name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row text-sm-right">
+                            <label class="col-sm-3 form-control-label m-t-5">Description</label>
+                            <div class="col-sm-8 text-left">
+                                <input class="form-control checking-field" type="text" [formControl]="tr_description" id="tr_description" required>
+                            </div>
+                        </div>
+                        <div class="form-group row text-sm-right">
+                            <label class="col-sm-3 form-control-label m-t-5">Repeated</label>
+                            <div class="col-sm-8 text-left">
+                                <input class="form-control checking-field" type="checkbox" [formControl]="tr_repeated" id="tr_repeated" required>
+                            </div>
+                        </div>
+                        <div class="form-group row text-sm-right">
+                            <label class="col-sm-3 form-control-label m-t-5">Expected to Last For </label>
+                            <div class="col-sm-8 text-left">
+                                <input class="form-control checking-field" type="number" [formControl]="tr_duration" id="tr_duration"  required>
+                            </div>
+                        </div>
+                        <div class="form-group row text-sm-right">
+                            <label class="col-sm-3 form-control-label m-t-5">Duration Time Unit </label>
+                            <div class="col-sm-8 text-left">
+                                <ng-select [multiple]="false" [items]="durUnit" (data)="refreshDurationValue($event)" (selected)="duration_selected($event)" (removed)="removed($event)"
+                                    placeholder="No duration  time selected" id="tr_duration_unit" >
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="form-group row text-sm-right">
+                            <label class="col-sm-3 form-control-label m-t-5">Event Meeting Period</label>
+                            <div class="col-sm-8 text-left">
+                                <ng-select [multiple]="false" [items]="period" (data)="refreshValue($event)" (selected)="period_selected($event)" (removed)="removed($event)"
+                                    placeholder="No period selected" id="tr_period"   >
+                                </ng-select>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group row text-sm-right">
+                            <label class="col-sm-3 form-control-label m-t-5">Note</label>
+                            <div class="col-sm-8 text-left">
+                                <input class="form-control checking-field" type="textarea" [formControl]="tr_note" id="tr_note" required>
+                            </div>
+                        </div>
+                        <div class="form-group row text-sm-right">
+                            <div class="col-sm-8 text-left">
+                                <button [disabled]="!trainingFormGroup.valid" (click)="onTrainingSubmit(trainingFormGroup.value)" class="btn btn-main" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                <button  (click)="onTrainingUpdateSubmit(trainingFormGroup.value)" class="btn"><i class="icon-note"></i>&nbsp; Update</button>
+                                <button [disabled]="!trainingFormGroup.valid" class="btn">D<i class="fa fa-remove"></i>&nbsp; Delete</button>
+                                
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="col-md-9 col-12 offset-md-1">
+                    <div>
+                        <ngx-datatable #mydatatable class="material" [headerHeight]="50" [limit]="5" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'"
+                            [trackByProp]="'updated'" [rows]="trainings" (select)='onSelectTraining($event)' [selected]="selected" [selectionType]="'single'" (activate)="onActivate($event)">
+                            <ngx-datatable-column name="Name" prop="name"></ngx-datatable-column>
+                            <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
+                            <ngx-datatable-column name="Repeated" prop="repeated"></ngx-datatable-column>
+                            <ngx-datatable-column name="Period" prop="period"></ngx-datatable-column>
+                        </ngx-datatable>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<toaster-container [toasterconfig]="toasterconfig"></toaster-container>

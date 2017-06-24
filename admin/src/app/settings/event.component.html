@@ -1,0 +1,291 @@
+<div class="animated fadeIn">
+    <div class="col">
+
+        <div widget class="card">
+            <div class="card-header">
+                <span><strong>EVENT CATEGORIES</strong></span>
+            </div>
+            <div class="card-block widget-body">
+                <form [formGroup]="categoryFormGroup" class="form">
+
+                    <div class="form-group">
+                        <label for="grp_name">Name</label>
+                        <input auto-complete [source]="eventcategories" value-property-name="name" display-property-name="name" [list-formatter]="autocompleListFormatterName"
+                            [formControl]="grp_name" class="form-control checking-field" type="text" id="grp_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="grp_descrip">Description</label>
+                        <input auto-complete [source]="eventcategories" value-property-name="description" display-property-name="description" [list-formatter]="autocompleListFormatterDescrip"
+                            [formControl]="grp_descrip" class="form-control checking-field" type="text" id="grp_descrip">
+                    </div>
+                    <div class="form-group">
+                        <button [disabled]="!categoryFormGroup.valid" (click)="onCategorySubmit(categoryFormGroup.value)" class="btn btn-main" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                        <button (click)="onGroupUpdateSubmit(groupFormGroup.value)" class="btn"><i class="icon-note"></i>&nbsp; Update</button>
+                        <button [disabled]="!categoryFormGroup.valid" class="btn" (click)="onGroupDelete(categoryFormGroup.value)"><i class="fa fa-remove"></i>&nbsp; Delete</button>
+
+                    </div>
+                </form>
+                <div>
+                    <ngx-datatable #mydatatable class="material" [headerHeight]="50" [limit]="5" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'"
+                        [trackByProp]="'updated'" [rows]="eventcategories" [selected]="selected" [selectionType]="'single'" (select)="onSelectCategoryTable($event)">
+                        <ngx-datatable-column name="Name" prop="name"></ngx-datatable-column>
+                        <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="col">
+        <div widget class="card">
+            <div class="card-header">
+                <span><strong>EVENTS</strong></span>
+            </div>
+            <div class="card-block widget-body">
+                <div class="col-md-6 mb-2">
+                    <form [formGroup]="eventFormGroup">
+                        <tabset>
+                            <tab heading="Home">
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Name</label>
+                                    <div class="col-sm-8 text-left">
+                                        <tooltip-content #myTooltip>
+                                            <b>Very</b> <span style="color: #C21F39">Dynamic</span> <span style="color: #00b3ee">Reusable</span>
+                                            <b><i><span style="color: #ffc520">Tooltip With</span></i></b> <small>Html support</small>.
+                                        </tooltip-content>
+                                        <input [tooltip]="myTooltip" class="form-control checking-field" type="text" formControlName="event_name" [formControl]="event_name"
+                                            required>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_name').touched && eventFormGroup.get('event_name').hasError('required')">Name is required</span>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_name').touched && eventFormGroup.get('event_name').hasError('invalidEmail')">Invalid email address</span>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Description</label>
+                                    <div class="col-sm-8 text-left">
+                                        <input class="form-control checking-field" type="text" formControlName="event_description" [formControl]="event_description"
+                                            required>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_description').touched && eventFormGroup.get('event_description').hasError('required')">Description is required</span>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_description').touched && eventFormGroup.get('event_description').hasError('invalidEmail')">Invalid email address</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Event Category </label>
+                                    <div class="col-sm-8 text-left">
+                                        <ng-select [multiple]="true" [items]="catNameArray" (data)="refreshCategoryValue($event)" (selected)="category_selected($event)"
+                                            (removed)="removed($event)" placeholder="No Department selected" id="event_category"
+                                            [formControl]="event_category">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </tab>
+                            <tab heading="Audience">
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Departments </label>
+                                    <div class="col-sm-8 text-left">
+                                        <ng-select [multiple]="true" [items]="departNameArray" (data)="refreshDeptValue($event)" (selected)="dept_selected($event)"
+                                            (removed)="removed($event)" placeholder="No Department selected" id="event_depart"
+                                            [formControl]="event_depart">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Groups </label>
+                                    <div class="col-sm-8 text-left">
+                                        <ng-select [multiple]="true" [items]="groupNameArray" (data)="refreshGrpValue($event)" (selected)="grp_selected($event)"
+                                            (removed)="removed($event)" placeholder="No Group selected" id="event_group" [formControl]="event_group">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Trainings </label>
+                                    <div class="col-sm-8 text-left">
+                                        <ng-select [multiple]="true" [items]="trgNameArray" (data)="refreshTrgValue($event)" (selected)="trg_selected($event)" (removed)="removed($event)"
+                                            placeholder="No Training selected" id="event_trg" [formControl]="event_trg">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Age Groups </label>
+                                    <div class="col-sm-8 text-left">
+                                        <ng-select [multiple]="true" [items]="ageNameArray" (data)="refreshAgeValue($event)" (selected)="age_selected($event)" (removed)="removed($event)"
+                                            placeholder="No Age Group selected" id="event_age" [formControl]="event_age">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </tab>
+                            <tab heading="Time">
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Repeated</label>
+                                    <div class="col-sm-8 text-left">
+                                        <input class="form-control checking-field" type="checkbox" formControlName="event_repeated" [formControl]="event_repeated"
+                                            required>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_repeated').touched && eventFormGroup.get('event_repeated').hasError('required')">Will the event keep repeating</span>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_repeated').touched && eventFormGroup.get('event_repeated').hasError('invalidEmail')">Invalid email address</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Expected to Last For </label>
+                                    <div class="col-sm-8 text-left">
+                                        <input class="form-control checking-field" type="number" formControlName="event_duration" [formControl]="event_duration"
+                                            required>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_duration').touched && eventFormGroup.get('event_duration').hasError('required')">Event will last for how many hours or minutes?</span>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_duration').touched && eventFormGroup.get('event_duration').hasError('invalidEmail')">Invalid email address</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Duration Time Unit </label>
+                                    <div class="col-sm-8 text-left">
+                                        <ng-select [multiple]="false" [items]="durUnit" (data)="refreshDurationValue($event)" (selected)="duration_selected($event)"
+                                            (removed)="removed($event)" placeholder="No duration  time selected" id="event_duration_unit"
+                                            [formControl]="event_duration_unit">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Period</label>
+                                    <div class="col-sm-8 text-left">
+                                        <ng-select [multiple]="false" [items]="period" (data)="refreshPeriodValue($event)" (selected)="period_selected($event)" (removed)="removed($event)"
+                                            placeholder="No period time selected" id="event_period" [formControl]="event_period">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Date of Month From</label>
+                                    <div class="col-sm-8 text-left">
+                                        <ng-select [multiple]="false" [items]="dayMth" (data)="refreshDateMthFromValue($event)" (selected)="datemthfrom_selected($event)"
+                                            (removed)="removed($event)" placeholder="No Date of the month selected" id="event_date_mth_from"
+                                            [formControl]="event_date_mth_from">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Date of Month To</label>
+                                    <div class="col-sm-8 text-left">
+                                        <ng-select [multiple]="false" [items]="dayMth" (data)="refreshDateMthToValue($event)" (selected)="datemthto_selected($event)"
+                                            (removed)="removed($event)" placeholder="No Date of the month selected" id="event_date_mth_to"
+                                            [formControl]="event_date_mth_to">
+                                        </ng-select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Month From</label>
+                                    <div class="col-sm-8 text-left">
+                                        <ng-select [multiple]="false" [items]="mths" (data)="refreshMthFromValue($event)" (selected)="mthfrom_selected($event)" (removed)="removed($event)"
+                                            placeholder="No Month selected" id="event_mth_from" [formControl]="event_mth_from">
+                                        </ng-select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Month To</label>
+                                    <div class="col-sm-8 text-left">
+                                        <ng-select [multiple]="false" [items]="mths" (data)="refreshMthToValue($event)" (selected)="mthto_selected($event)" (removed)="removed($event)"
+                                            placeholder="No Month selected" id="event_mth_to" [formControl]="event_mth_to">
+                                        </ng-select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Week Days</label>
+                                    <div class="col-sm-8 text-left">
+                                        <ng-select [multiple]="true" [items]="wkDays" (data)="refreshWkDayValue($event)" (selected)="wkday_selected($event)" (removed)="removed($event)"
+                                            placeholder="No Week Day selected" id="event_wkday" [formControl]="event_wkday">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Start Date </label>
+                                    <div class="col-sm-8 text-left">
+                                        <input class="form-control checking-field" type="date" formControlName="event_date_start" id="event_date_start" required>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_date_start').touched && eventFormGroup.get('event_date_start').hasError('required')">When is the going to start is required</span>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_date_start').touched && eventFormGroup.get('event_date_start').hasError('invalidEmail')">Invalid email address</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">End Date </label>
+                                    <div class="col-sm-8 text-left">
+                                        <input formControlName="event_date_end" class="form-control checking-field" type="date" id="event_date_end" required>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_date_end').touched && eventFormGroup.get('event_date_end').hasError('required')">Event is expected to end when is required</span>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_date_end').touched && eventFormGroup.get('event_date_end').hasError('invalidEmail')">Invalid email address</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Start Time </label>
+                                    <div class="col-sm-8 text-left">
+                                        <timepicker formControlName="event_time_start" (change)="start_time_changed()" [hourStep]="hstep" [minuteStep]="mstep" [showMeridian]="ismeridian"
+                                            [readonlyInput]="!isEnabled" [mousewheel]="mousewheel" [arrowkeys]="arrowkeys" [showSpinners]="showSpinners"
+                                            [min]="min" [max]="max"></timepicker>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Expected End Time </label>
+                                    <div class="col-sm-8 text-left">
+                                        <timepicker formControlName="event_time_end" (change)="end_time_changed()" [hourStep]="hstep" [minuteStep]="mstep" [showMeridian]="ismeridian"
+                                            [readonlyInput]="!isEnabled"></timepicker>
+                                    </div>
+                                </div>
+                            </tab>
+                            <tab heading="Other Details">
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Venue</label>
+                                    <div class="col-sm-8 text-left">
+                                        <input class="form-control checking-field" type="textarea" formControlName="event_venue" [formControl]="event_venue" required>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_venue').touched && eventFormGroup.get('event_venue').hasError('required')">Venue is required</span>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_venue').touched && eventFormGroup.get('event_venue').hasError('invalidEmail')">Invalid email address</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row text-sm-right">
+                                    <label class="col-sm-3 form-control-label m-t-5">Note</label>
+                                    <div class="col-sm-8 text-left">
+                                        <input class="form-control checking-field" type="textarea" formControlName="event_note" [formControl]="event_note" required>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_note').touched && eventFormGroup.get('event_note').hasError('required')">Note is required</span>
+                                        <span class="help-block text-danger" *ngIf="eventFormGroup.get('event_note').touched && eventFormGroup.get('event_note').hasError('invalidEmail')">Invalid email address</span>
+                                    </div>
+                                </div>
+                            </tab>
+                        </tabset>
+                        <div class="form-group row text-sm-right">
+                            <div class="col-sm-8 text-left">
+                                <button [disabled]="!eventFormGroup.valid" (click)="onEventSubmit(eventFormGroup.value)" class="btn btn-main" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                <button (click)="onTrainingUpdateSubmit(eventFormGroup.value)" class="btn"><i class="icon-note"></i>&nbsp; Update</button>
+                                <button [disabled]="!eventFormGroup.valid" class="btn"><i class="fa fa-remove"></i>&nbsp; Delete</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div widget class="card">
+            <div class="card-header">
+                <span><strong>EVENTS LIST</strong></span>
+            </div>
+            <div class="card-block widget-body">
+                <div>
+                    <ngx-datatable #mydatatable class="material" [headerHeight]="50" [limit]="5" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'"
+                        [trackByProp]="'updated'" [rows]="events" (select)='onSelectEvent($event)' [selected]="selected" [selectionType]="'single'"
+                        (activate)="onActivate($event)">
+                        <ngx-datatable-column name="Name" prop="name"></ngx-datatable-column>
+                        <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
+                        <ngx-datatable-column name="Repeated" prop="repeated"></ngx-datatable-column>
+                        <ngx-datatable-column name="Period" prop="period"></ngx-datatable-column>
+                        <ngx-datatable-column name="Week Day" prop="start_date"></ngx-datatable-column>
+                        <ngx-datatable-column name="Start Time" prop="start_time"></ngx-datatable-column>
+                        <ngx-datatable-column name="Venue" prop="venue"></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<toaster-container [toasterconfig]="toasterconfig"></toaster-container>

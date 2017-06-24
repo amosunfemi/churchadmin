@@ -1,0 +1,29 @@
+{
+    "database": {
+        "address": "127.0.0.1",
+        "port": 5433,
+        "dbname": "churchtestdb",
+        "userid": "postgres",
+        "password": "sunday123",
+        "dbtype": "postgres"
+    },
+    "app": {
+        "address": "localhost",
+        "http_port": "9090",
+        "appname": "churchadmin",
+        "appdir": "/Users/amosunsunday/Documents/Official/ChurchAdmin/"
+    },
+    "logging": {
+        "context": "churchadmin",
+        "error": "error.json",
+        "info": "info.json"
+    },
+    "cache": {
+        "current_cache": "persistence1",
+        "persistence1": {
+            "store": "redis",
+            "url": "localhost:6379",
+            "time_min":60
+        }
+    }
+}

@@ -1,0 +1,139 @@
+<!--component html goes here -->
+<div class="row">
+
+    <div class="col-xl-6 col-lg-6 col-12 bottom-30">
+        <div widget class="card">
+            <div class="card-header">
+                <span><strong>GROUPS</strong></span>
+            </div>
+            <div class="card-block widget-body">
+                <form [formGroup]="groupFormGroup" class="form">
+                    <tabset>
+                        <tab heading="Home">
+                            <div class="form-group">
+                                <label for="grp_name">Name</label>
+                                <input auto-complete [source]="groups" value-property-name="name" display-property-name="name" [list-formatter]="autocompleListFormatterName"
+                                    [formControl]="grp_name" class="form-control checking-field" type="text" id="grp_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="grp_descrip">Description</label>
+                                <input auto-complete [source]="groups" value-property-name="description" display-property-name="description" [list-formatter]="autocompleListFormatterDescrip"
+                                    [formControl]="grp_descrip" class="form-control checking-field" type="text" id="grp_descrip">
+                            </div>
+                            <div class="form-group">
+                                <label for="grp_date_started">Date Started</label>
+                                <input [formControl]="grp_date_started" class="form-control checking-field" type="date" id="grp_date_started">
+                            </div>
+                        </tab>
+                        <tab heading="Members">
+                            <ngx-datatable #mydatatable class="material" [headerHeight]="50" [limit]="5" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'"
+                                [trackByProp]="'updated'" [rows]="grpdptmembers" [selected]="selected" [selectionType]="'single'" (select)="onSelectGroupTable($event)">
+                                <ngx-datatable-column name="Name" prop="name"></ngx-datatable-column>
+                                <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
+                                <ngx-datatable-column name="Date Started" prop="date_created"></ngx-datatable-column>
+                            </ngx-datatable>
+                        </tab>
+                        <tab heading="Leaders">
+                            <div class="form-group">
+                                <label for="grp_hod">Group Head </label>
+                                <input auto-complete [source]="groups" value-property-name="name" display-property-name="name" [list-formatter]="autocompleListFormatterName"
+                                    [formControl]="grp_hod" class="form-control checking-field" type="text" id="grp_hod">
+                            </div>
+                            <div class="form-group">
+                                <label for="grp_assist_hod">Assistant Group Head</label>
+                                <input auto-complete [source]="groups" value-property-name="description" display-property-name="description" [list-formatter]="autocompleListFormatterDescrip"
+                                    [formControl]="grp_assist_hod" class="form-control checking-field" type="text" id="grp_assist_hod">
+                            </div>
+                            <div class="form-group">
+                                <label for="grp_date_started">Date Started</label>
+                                <input [formControl]="grp_date_started" class="form-control checking-field" type="date" id="grp_date_started">
+                            </div>
+                        </tab>
+                    </tabset>
+
+                    <div class="form-group">
+                        <button [disabled]="!groupFormGroup.valid" (click)="onGroupSubmit(groupFormGroup.value)" class="btn btn-main" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                        <button (click)="onGroupUpdateSubmit(groupFormGroup.value)" class="btn"><i class="icon-note"></i>&nbsp; Update</button>
+                        <button [disabled]="!groupFormGroup.valid" class="btn" (click)="onGroupDelete(groupFormGroup.value)"><i class="fa fa-remove"></i>&nbsp; Delete</button>
+                    </div>
+                </form>
+                <div>
+                    <ngx-datatable #mydatatable class="material" [headerHeight]="50" [limit]="5" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'"
+                        [trackByProp]="'updated'" [rows]="groups" [selected]="selected" [selectionType]="'single'" (select)="onSelectGroupTable($event)">
+                        <ngx-datatable-column name="Name" prop="name"></ngx-datatable-column>
+                        <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
+                        <ngx-datatable-column name="Date Started" prop="date_created"></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-6 col-lg-6 col-12 bottom-30">
+        <div widget class="card">
+            <div class="card-header">
+                <span><strong>DEPARTMENTS</strong></span>
+            </div>
+            <div class="card-block widget-body">
+                <form class="form" [formGroup]="deptFormGroup">
+                    <tabset>
+                        <tab heading="Home">
+                            <div class="form-group">
+                                <label for="dept_name">Name</label>
+                                <input auto-complete [source]="departments" value-property-name="name" display-property-name="name" [list-formatter]="autocompleListFormatterName"
+                                    [formControl]="dept_name" class="form-control checking-field" type="text" id="dept_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="dept_description">Description</label>
+                                <input auto-complete [source]="departments" value-property-name="description" display-property-name="description" [list-formatter]="autocompleListFormatterDescrip"
+                                    [formControl]="dept_description" class="form-control checking-field" type="text" id="dept_description">
+                            </div>
+                            <div class="form-group">
+                                <label for="dept_date_started">Date Started</label>
+                                <input [formControl]="dept_date_started" class="form-control checking-field" type="date" id="dept_date_started">
+                            </div>
+
+                            <div class="form-group">
+                                <button [disabled]="!deptFormGroup.valid" (click)="onDeptSubmit(deptFormGroup.value)" class="btn btn-main" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                                <button (click)="onDeptUpdateSubmit(deptFormGroup.value)" class="btn"><i class="icon-note"></i>&nbsp; Update</button>
+                                <button [disabled]="!deptFormGroup.valid" class="btn"><i class="fa fa-remove"></i>&nbsp; Delete</button>
+
+                            </div>
+                        </tab>
+                        <tab heading="Members">
+                            <ngx-datatable #mydatatable class="material" [headerHeight]="50" [limit]="5" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'"
+                                [trackByProp]="'updated'" [rows]="grpdptmembers" [selectionType]="'single'" (select)="onSelectDepart($event)">
+                                <ngx-datatable-column name="Name" prop="name"></ngx-datatable-column>
+                                <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
+                                <ngx-datatable-column name="Date Started" prop="date_created"></ngx-datatable-column>
+                            </ngx-datatable>
+                        </tab>
+                        <tab heading="Leaders">
+                            <div class="form-group">
+                                <label for="grp_hod">Head Of Department (HOD)</label>
+                                <input auto-complete [source]="groups" value-property-name="name" display-property-name="name" [list-formatter]="autocompleListFormatterName"
+                                    [formControl]="dept_hod" class="form-control checking-field" type="text" id="dept_hod">
+                            </div>
+                            <div class="form-group">
+                                <label for="grp_assist_hod">Assistant Head Of Department</label>
+                                <input auto-complete [source]="groups" value-property-name="description" display-property-name="description" [list-formatter]="autocompleListFormatterDescrip"
+                                    [formControl]="dept_assist_hod" class="form-control checking-field" type="text" id="dept_assist_hod">
+                            </div>
+                            
+                        </tab>
+                    </tabset>
+                </form>
+                <div>
+                    <ngx-datatable #mydatatable class="material" [headerHeight]="50" [limit]="5" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'"
+                        [trackByProp]="'updated'" [rows]="departments" [selectionType]="'single'" (select)="onSelectDepart($event)">
+                        <ngx-datatable-column name="Name" prop="name"></ngx-datatable-column>
+                        <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
+                        <ngx-datatable-column name="Date Started" prop="date_created"></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,228 @@
+<div class="animated fadeIn">
+    <div class="row bottom-30">
+        <div class="col">
+            <div widget class="card">
+                <div class="card-header">
+                    <span><strong>DEFAULT COUNTRY AND LANGUAGE</strong></span>
+                </div>
+                <div class="card-block widget-body">
+                    <form [formGroup]="countryFormGroup" (ngSubmit)="onCountryLangSubmit(countryFormGroup.value)" class="row form-inline">
+                        <div class="form-group col-md-3 col-sm-6">
+                            <label for="country-id">Country</label>
+                            <input auto-complete [source]="countries" value-property-name="id" display-property-name="name" [list-formatter]="autocompleListFormatter"
+                                [formControl]="country_id" class="form-control checking-field" type="text" id="country_id">
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                            <label for="language_id">Language</label>
+                            <input auto-complete [source]="languages" value-property-name="id" display-property-name="name" [list-formatter]="autocompleListFormatter"
+                                [formControl]="language_id" class="form-control checking-field" type="text" id="language_id">
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                            <label for="currency_id">Currency</label>
+                            <input auto-complete [source]="currencies" value-property-name="id" display-property-name="name" [list-formatter]="autocompleListFormatter"
+                                [formControl]="currency_id" class="form-control checking-field" type="text" id="currency_id">
+                        </div>
+                        
+                        <div class="form-group col-md-3 col-sm-6">
+                            <button [disabled]="!countryFormGroup.valid" type="submit" class="btn btn-main">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <span><strong>REGIONS AND STATES</strong></span>
+                </div>
+                <div class="card-block">
+                    <form [formGroup]="regionFormGroup" class="form">
+                        <div class="form-group">
+                            <label for="region_default">Default Region</label>
+                            <input type="checkbox" id="region_default" [formControl]="region_default" class="form-control checking-field">
+                        </div>
+                        <div class="form-group">
+                            <label for="region_name">Name</label>
+                            <input auto-complete [source]="regions" value-property-name="name" display-property-name="name" [list-formatter]="autocompleListFormatter"
+                                [formControl]="region_name" class="form-control checking-field" type="text" id="region_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="region_descrip">Description</label>
+                            <input auto-complete [source]="regions" value-property-name="description" display-property-name="description" [list-formatter]="autocompleListFormatterDescrip"
+                                [formControl]="region_descrip" class="form-control checking-field" type="text" id="region_descrip">
+                        </div>
+                        <div class="form-group">
+                            <label for="region_city">Main/Capital City</label>
+                            <input auto-complete [source]="regions" value-property-name="main_city_town" display-property-name="main_city_town" [list-formatter]="autocompleListFormatterMainCity"
+                                [formControl]="region_city" class="form-control checking-field" type="text" id="region_city">
+                        </div>
+                        <div class="form-group">
+                            <label for="region_isocode">ISO Code</label>
+                            <input auto-complete [source]="regions" value-property-name="iso_code" display-property-name="iso_code" [list-formatter]="autocompleListFormatterIsoCode"
+                                [formControl]="region_isocode" class="form-control checking-field" type="text" id="region_isocode">
+                        </div>
+                        <div class="form-group">
+                            <button [disabled]="!regionFormGroup.valid" (click)="onRegionSubmit(regionFormGroup.value)" class="btn btn-main" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                            <button  (click)="onRegionUpdateSubmit(regionFormGroup.value)" class="btn"><i class="icon-note"></i>&nbsp; Update</button>
+                            <button [disabled]="!regionFormGroup.valid" class="btn"><i class="fa fa-remove"></i>&nbsp; Delete</button>
+                            
+                        </div>
+                    </form>
+                    <div>
+                        <ngx-datatable #mydatatable class="material" [headerHeight]="50" [limit]="5" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'"
+                            [trackByProp]="'updated'" [rows]="regions" (select)='onSelectRegion($event)' [selected]="selected" [selectionType]="'single'" (activate)="onActivate($event)">
+                            <ngx-datatable-column name="Name" prop="name"></ngx-datatable-column>
+                            <ngx-datatable-column name="Description" prop="description"></ngx-datatable-column>
+                            <ngx-datatable-column name="City Town" prop="main_city_town"></ngx-datatable-column>
+                        </ngx-datatable>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+        <div class="col-sm-6">
+            <div widget class="card">
+                <div class="card-header">
+                    <span><strong>IDENTIFICATIONS</strong></span>
+                </div>
+                <div class="card-block widget-body">
+                    <form class="form" [formGroup]="idtypeFormGroup">
+                        <div class="form-group">
+                            <label for="idtype_default">Default ID</label>
+                            <input type="checkbox" [formControl]="idtype_default" class="form-control checking-field" id="idtype_default">
+                        </div>
+                        <div class="form-group">
+                            <label for="idtype_code">Code</label>
+                            <input auto-complete [source]="idtypes" value-property-name="code" display-property-name="code" [list-formatter]="autocompleListFormatterCode"
+                                [formControl]="idtype_code" class="form-control checking-field" type="text" id="idtype_code">
+                        </div>
+                        <div class="form-group">
+                            <label for="idtype_name">Name</label>
+                            <input auto-complete [source]="idtypes" value-property-name="name" display-property-name="name" [list-formatter]="autocompleListFormatter"
+                                [formControl]="idtype_name" class="form-control checking-field" type="text" id="idtype_name">
+                        </div>
+                        <div class="form-group">
+                            <label for="idtype_country">Country</label>
+                            <input auto-complete [source]="countries" value-property-name="id" display-property-name="name" [list-formatter]="autocompleListFormatter"
+                                [formControl]="idtype_country" class="form-control checking-field" type="text" id="idtype_country">
+                        </div>
+                        <div class="form-group">
+                            <label for="idtype_issueby">Issuing Authority</label>
+                            <input auto-complete [source]="idtypes" value-property-name="issued_by" display-property-name="issued_by" [list-formatter]="autocompleListFormatterIssuedBy"
+                                [formControl]="idtype_issueby" class="form-control checking-field" type="text" id="idtype_issueby">
+                        </div>
+
+                        <div class="form-group">
+                            <button [disabled]="!idtypeFormGroup.valid" (click)="onIDTypeSubmit(idtypeFormGroup.value)" class="btn btn-main" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                            <button  (click)="onIDTypeUpdateSubmit(idtypeFormGroup.value)" class="btn"><i class="icon-note"></i>&nbsp; Update</button>
+                            <button [disabled]="!idtypeFormGroup.valid" class="btn"><i class="fa fa-remove"></i>&nbsp; Delete</button>
+                            
+                        </div>
+                    </form>
+                    <div>
+                        <ngx-datatable #mydatatable class="material" [headerHeight]="50" [limit]="5" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'"
+                            [trackByProp]="'updated'" [rows]="idtypes" (select)='onSelectId($event)' [selected]="selected" [selectionType]="'single'" >
+                            <ngx-datatable-column name="Code" prop="code"></ngx-datatable-column>
+                            <ngx-datatable-column name="Name" prop="name"></ngx-datatable-column>
+                            <ngx-datatable-column name="Issued By" prop="issued_by"></ngx-datatable-column>
+                        </ngx-datatable>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+</div>
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-6">
+            <div widget class="card">
+                <div class="card-header">
+                    <span><strong> TITLES AND SALUTATIONS</strong></span>
+                </div>
+                <div class="card-block widget-body">
+                    <form class="form" [formGroup]="titleFormGroup">
+                        <div class="form-group">
+                            <label for="title_code">Code</label>
+                            <input auto-complete [source]="titles" value-property-name="code" display-property-name="code" [list-formatter]="autocompleListFormatterCode"
+                                [formControl]="title_code" class="form-control checking-field" type="text" id="title_code">
+                        </div>
+                        <div class="form-group">
+                            <label for="title_name">Name</label>
+                            <input auto-complete [source]="titles" value-property-name="name" display-property-name="name" [list-formatter]="autocompleListFormatter"
+                                [formControl]="title_name" class="form-control checking-field" type="text" id="title_name">
+                        </div>
+                        <div class="form-group">
+                            <button [disabled]="!titleFormGroup.valid" (click)="onTitleSubmit(titleFormGroup.value)" class="btn btn-main" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                            <button  (click)="onTitleUpdateSubmit(titleFormGroup.value)" class="btn"><i class="icon-note"></i>&nbsp; Update</button>
+                            <button [disabled]="!titleFormGroup.valid" class="btn"><i class="fa fa-remove"></i>&nbsp; Delete</button>
+                            
+                        </div>
+                    </form>
+                    <div>
+                        <ngx-datatable #mydatatable class="material" [headerHeight]="50" [limit]="5" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'"
+                            [trackByProp]="'updated'" [rows]="titles" (select)='onSelectTitle($event)' [selected]="selected" [selectionType]="'single'" (activate)="onActivate($event)">
+                            <ngx-datatable-column name="Code" prop="code"></ngx-datatable-column>
+                            <ngx-datatable-column name="Name" prop="name"></ngx-datatable-column>
+                        </ngx-datatable>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+        <div class="col-sm-6">
+            <div widget class="card">
+                <div class="card-header">
+                    <span><strong>AGE GROUPS</strong></span>
+                </div>
+                <div class="card-block widget-body">
+                    <form class="form" [formGroup]="agegroupFormGroup">
+                        <div class="form-group">
+                            <label for="agegroup_code">Code</label>
+                            <input auto-complete [source]="agegroups" value-property-name="code" display-property-name="code" [list-formatter]="autocompleListFormatterCode"
+                                [formControl]="agegroup_code" class="form-control checking-field" type="text" id="agegroup_code">
+                        </div>
+                        <div class="form-group">
+                            <label for="agegroup_descrip">Description</label>
+                            <input auto-complete [source]="agegroups" value-property-name="description" display-property-name="description" [list-formatter]="autocompleListFormatterDescrip"
+                                [formControl]="agegroup_descrip" class="form-control checking-field" type="text" id="agegroup_descrip">
+                        </div>
+                        <div class="form-group">
+                            <label for="agegroup_minyr">Min. Year</label>
+                            <input [formControl]="agegroup_minyr" class="form-control checking-field" type="number" id="agegroup_minyr">
+                        </div>
+                        <div class="form-group">
+                            <label for="agegroup_maxyr">Max. Year</label>
+                            <input [formControl]="agegroup_maxyr" class="form-control checking-field" type="number" id="agegroup_maxyr">
+                        </div>
+
+                        <div class="form-group">
+                            <button [disabled]="!agegroupFormGroup.valid" (click)="onAgeGroupSubmit(agegroupFormGroup.value)" class="btn btn-main" type="submit"><i class="fa fa-save"></i>&nbsp; Save</button>
+                            <button  (click)="onAgeGroupUpdateSubmit(agegroupFormGroup.value)" class="btn"><i class="icon-note"></i>&nbsp; Update</button>
+                            <button [disabled]="!agegroupFormGroup.valid" class="btn"><i class="fa fa-remove"></i>&nbsp; Delete</button>
+                            
+                        </div>
+                    </form>
+                    <div>
+                        <ngx-datatable #mydatatable class="material" [headerHeight]="50" [limit]="5" [columnMode]="'force'" [footerHeight]="50" [rowHeight]="'auto'"
+                            [trackByProp]="'updated'" [rows]="agegroups" (select)='onSelectAgeGroup($event)' [selected]="selected" [selectionType]="'single'" (activate)="onActivate($event)">
+                            <ngx-datatable-column name="Code" prop="code"></ngx-datatable-column>
+                            <ngx-datatable-column name="Min. Year" prop="min_age"></ngx-datatable-column>
+                            <ngx-datatable-column name="Max. Year" prop="max_age"></ngx-datatable-column>
+                        </ngx-datatable>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+</div>
+<toaster-container [toasterconfig]="toasterconfig"></toaster-container>

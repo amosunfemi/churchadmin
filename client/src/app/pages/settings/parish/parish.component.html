@@ -1,0 +1,93 @@
+<div class="row">
+    <div class="col bottom-30">
+        <div widget class="card">
+            <div class="card-header">
+                <span>PARISHES</span>
+                <div class="widget-controls">
+                    <a data-widgster="expand" href="#" class="transition"><i class="fa fa-chevron-down"></i></a>
+                    <a data-widgster="collapse" href="#" class="transition"><i class="fa fa-chevron-up"></i></a>
+                    <a data-widgster="fullscreen" href="#" class="transition"><i class="fa fa-expand"></i></a>
+                    <a data-widgster="restore" href="#" class="transition"><i class="fa fa-compress"></i></a>
+                    <a data-widgster="close" href="#" class="transition"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="card-block widget-body">
+                <div class="row bottom-30">
+                    <div class="col">
+                        <ul class="nav nav-tabs top tabs-default" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#p1" role="tab" data-toggle="tab">List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#p2" role="tab" data-toggle="tab">Detail</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content tab-content-default">
+                            <div class="tab-pane fade show active" id="p1">
+                                <div widget class="card">
+                                    <div class="card-header">
+                                        <span>All Parishes</span>
+
+                                    </div>
+                                    <div class="card-block widget-body">
+                                        <ag-grid-angular #agGrid style="width: 100%; height: 500px;" class="ag-fresh" [gridOptions]="gridOptions" [columnDefs]="columnDefs" rowModelType="pagination" enableColResize rowSelection="single" (rowClicked)='onRowClicked($event)' (cellClicked)='onCellClicked($event)'
+                                            (selectionChanged)='onSelectionChanged($event)' [defaultColDef]="columnDefs">
+                                        </ag-grid-angular>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="tab-pane fade" id="p2">
+                                <div widget class="card">
+                                    <div class="card-header">
+                                        <span>Edit Parish</span>
+
+                                    </div>
+                                    <div class="card-block widget-body">
+
+                                        <div class="card-block">
+                                            <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class=" text-left">
+                                                <div class="form-group">
+                                                    <label class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input checkbox-main" type="checkbox">
+                                                        <span class="custom-control-indicator"></span>
+                                                        <span class="custom-control-description align-middle">Main Parish</span>
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input auto-complete [source]="parishes" value-property-name="id" display-property-name="name" [list-formatter]="autocompleListFormatter" [formControl]="parent_id" class="form-control checking-field" placeholder="Parent Parish" type="text">
+                                                    <span class="help-block text-danger" *ngIf="form.get('fullname').touched && form.get('fullname').hasError('required')">Parent Parish Name</span>
+                                                    <span class="help-block text-danger" *ngIf="form.get('fullname').touched && form.get('fullname').hasError('minlength')">Parent Parish should be more than 3 characters</span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input auto-complete [source]="parishes" value-property-name="name" display-property-name="name" [list-formatter]="autocompleListFormatter" [formControl]="name" class="form-control checking-field" placeholder="Name" type="text">
+                                                    <span class="help-block text-danger" *ngIf="form.get('name').touched && form.get('name').hasError('required')">Name</span>
+                                                    <span class="help-block text-danger" *ngIf="form.get('name').touched && form.get('name').hasError('minlength')">Name should be more than 2 characters</span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input auto-complete [source]="parishes" value-property-name="full_name" display-property-name="full_name" [list-formatter]="autocompleListFormatterFullName" [formControl]="fullname" class="form-control checking-field" placeholder="Full Name" type="text">
+                                                    <span class="help-block text-danger" *ngIf="form.get('fullname').touched && form.get('fullname').hasError('required')">Full Name</span>
+                                                    <span class="help-block text-danger" *ngIf="form.get('fullname').touched && form.get('fullname').hasError('minlength')">Full Name should be more than 5 characters</span>
+                                                </div>
+
+
+                                                <div class="form-group">
+                                                    <button [disabled]="!form.valid" class="btn btn-main" type="submit">Save</button>
+                                                </div>
+                                            </form>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

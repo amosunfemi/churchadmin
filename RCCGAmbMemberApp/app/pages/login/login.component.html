@@ -1,0 +1,6 @@
+<SlideContainer #slides pageIndicators="true" indicatorsColor="#000" angular="true">
+    <Slide *ngFor="let img of images">
+        <Label [text]="img.title"></Label>
+        <Image [src]="img.source"></Image>
+    </Slide>
+</SlideContainer>

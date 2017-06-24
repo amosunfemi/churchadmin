@@ -1,0 +1,25 @@
+@import "theme/styles/variables";
+@import "theme/styles/mixins";
+@import "../../node_modules/pace/themes/pace-theme-flash";
+@import "../../node_modules/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox";
+@import "../../node_modules/dropzone/dist/min/dropzone.min";
+@import "theme/styles/bootstrap-override";
+@import "theme/styles/libs-override";
+@import "theme/styles/base";
+@import '../../node_modules/@swimlane/ngx-datatable/release/index.css';
+@import '../../node_modules/@swimlane/ngx-datatable/release/themes/material.css';
+@import '../../node_modules/@swimlane/ngx-datatable/release/assets/icons.css';
+.fade.in {
+    opacity: 1;
+}
+
+.modal.in .modal-dialog {
+    -webkit-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+    transform: translate(0, 0);
+}
+
+.modal-backdrop.in {
+    opacity: 0.5;
+}
