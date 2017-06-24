@@ -18,14 +18,13 @@
                 </div>
                 <div class="form-group">
                   <!--<span class="input-group-addon"><i class="icon-lock"></i></span>-->
-                  <input [formControl]="password" class="form-control checking-field icon-lock" placeholder="Password" type="password">
+                  <input [formControl]="password" class="form-control checking-field" placeholder="Password" type="password">
                   <span class="help-block text-danger" *ngIf="form.get('password').touched && form.get('password').hasError('required')">Password is required</span>
                   <span class="help-block text-danger" *ngIf="form.get('password').touched && form.get('password').hasError('minlength')">Password isn't long enough, minimum of 6 characters</span>
                 </div>
                 <div class="row">
                   <div class="col-6">
                     <button [disabled]="!form.valid" class="btn btn-main btn-block" type="submit">Login</button>
-
                   </div>
                   <div class="col-6 text-right">
                     <button type="button" class="btn btn-link px-0">Forgot password?</button>

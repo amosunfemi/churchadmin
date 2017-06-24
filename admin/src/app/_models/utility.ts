@@ -213,6 +213,8 @@ export class EventDetail {
     month_from: string;
     month_to: string;
     audience?: Array<EventAudience>;
+    event_category_id: number;
+    parish_id:number
 
 }
 

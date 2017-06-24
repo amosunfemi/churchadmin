@@ -24,6 +24,8 @@ export function getTabsetConfig(): TabsetConfig {
 })
 export class EventComponent {
 
+    private toasterService: ToasterService;
+
     public wkDays: Array<string> = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
     public durUnit: Array<string> = ['MINUTES', 'HOURS', 'DAYS', 'WEEKS', 'MONTH', 'YEARS'];
     public period: Array<string> = ['DAILY', 'WEEKLY', 'BI-WEEKLY', 'FORTNIGHT', 'MONTHLY', 'QUATERLY', 'SEMI-YEALY', 'YEARLY'];
@@ -105,7 +107,7 @@ export class EventComponent {
     public start_time: Date = new Date();
     public end_time: Date = new Date();
 
-    public toasterService: ToasterService;
+    
 
     public toasterconfig: ToasterConfig =
     new ToasterConfig({
@@ -430,6 +432,9 @@ export class EventComponent {
     }
 
     public onEventSubmit(values: Object): void {
+        let event_cat = this.extractValueFromControl(values['event_category']);
+        let event_catgory = _.find(this.eventcategories, function(o) { return o.name ==event_cat });
+
         if (this.eventFormGroup.valid) {
             this.loading = true;
             if (_.isObject(values['event_name']['id']) && values['event_name']['id'] > 0) {
@@ -460,6 +465,8 @@ export class EventComponent {
                 date_month_to: +this.extractValueFromControl(values['event_date_mth_to']),//[0]["text"],
                 month_to: this.extractValueFromControl(values['event_mth_to']),//[0]["text"],
                 month_from: this.extractValueFromControl(values['event_mth_from']),//[0]["text"],
+                event_category_id: event_catgory.id,
+                parish_id: this._settingsService.parish_id
             })
             this._settingsService.saveEventDetail(regSt).subscribe(r => {
                 this.showSuccess('Event saved successfully');
