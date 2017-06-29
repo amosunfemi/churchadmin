@@ -76,7 +76,7 @@
                                 <div class="form-group row text-sm-right">
                                     <label class="col-sm-3 form-control-label m-t-5">Event Category </label>
                                     <div class="col-sm-8 text-left">
-                                        <ng-select [multiple]="true" [items]="catNameArray" (data)="refreshCategoryValue($event)" (selected)="category_selected($event)"
+                                        <ng-select [multiple]="false" [items]="catNameArray" (data)="refreshCategoryValue($event)" (selected)="category_selected($event)"
                                             (removed)="removed($event)" placeholder="No Category selected" id="event_category"
                                             [formControl]="event_category">
                                         </ng-select>

@@ -2,7 +2,7 @@ import { SettingsService } from '../_services/settings.service';
 import { Component, ViewEncapsulation, ViewChild, ViewContainerRef } from '@angular/core';
 import { DomSanitizer, SafeHtml, Title } from '@angular/platform-browser';
 import { FormBuilder, Validators, AbstractControl, FormGroup, FormControl } from '@angular/forms';
-import { Events, Group, Department, Training, AgeGroup, EventDetail, EventAudience , EventCategory} from '../_models/utility';
+import { Events, Group, Department, Training, AgeGroup, EventDetail, EventAudience, EventCategory } from '../_models/utility';
 import { ToasterModule, ToasterService, ToasterConfig } from 'angular2-toaster/angular2-toaster';
 import { MomentModule } from 'angular2-moment/moment.module';
 import * as moment from 'moment';
@@ -107,7 +107,7 @@ export class EventComponent {
     public start_time: Date = new Date();
     public end_time: Date = new Date();
 
-    
+
 
     public toasterconfig: ToasterConfig =
     new ToasterConfig({
@@ -141,7 +141,7 @@ export class EventComponent {
             'event_date_mth_to': [''],
             'event_mth_from': [''],
             'event_mth_to': [''],
-            'event_category':[''],
+            'event_category': [''],
             'event_note': ['', Validators.compose([Validators.minLength(3)])],
             'event_venue': ['', Validators.compose([Validators.minLength(3)])]
         });
@@ -192,21 +192,19 @@ export class EventComponent {
         console.log('Select Event', selected, this.selected);
         (<HTMLInputElement>document.getElementById("grp_name")).value = selected[0].name;
         (<HTMLInputElement>document.getElementById("grp_descrip")).value = selected[0].description;
-        
         (<HTMLInputElement>document.getElementById("grp_name")).disabled = true;
     }
     private getEvents() {
         this._settingsService.getAllEventDetails().subscribe(p => {
             this.events = p;
-
         });
     }
 
     private getEventsCategories() {
-        
+
         this._settingsService.getAllEventCategory().subscribe(p => {
             this.eventcategories = p;
-            
+
             let catArr = new Array<string>();
             this.eventcategories.forEach(function (item) {
                 catArr.push(item.name);
@@ -237,7 +235,7 @@ export class EventComponent {
         });
     }
 
-    
+
 
     private getAgeGroups() {
         this._settingsService.getAgeGroups().subscribe(p => {
@@ -426,6 +424,67 @@ export class EventComponent {
         }
     }
 
+    public buildEventAttendance(value: any[], audtype: string): EventAudience[] {
+        let retval = new Array<EventAudience>();
+        if (audtype == "GROUP") {
+            let grps = this.groups;
+            _.forEach(value, function (item) {
+                let group = _.find(grps, function (o) { return o.name == item['text'] });
+                retval.push(<EventAudience>({
+                    id: 0,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                    status: 'ACTIVE',
+                    group_id: group.id,
+                }))
+            });
+        }
+
+        if (audtype == "TRAINING") {
+            let trgs = this.trainings;
+            _.forEach(value, function (item) {
+                let training = _.find(trgs , function (o) { return o.name == item['text'] });
+                retval.push(<EventAudience>({
+                    id: 0,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                    status: 'ACTIVE',
+                    training_id: training.id,
+                }))
+            });
+        }
+
+        if (audtype == "DEPARTMENT") {
+            let depts = this.departments;
+            _.forEach(value, function (item) {
+                let dept = _.find(depts , function (o) { return o.name == item['text'] });
+                retval.push(<EventAudience>({
+                    id: 0,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                    status: 'ACTIVE',
+                    department_id: dept.id,
+                }))
+            });
+        }
+
+        if (audtype == "AGEGROUP") {
+            let age_grps = this.agegroups;
+            _.forEach(value, function (item) {
+                let agegroup = _.find(age_grps , function (o) { return o.name == item['text'] });
+                retval.push(<EventAudience>({
+                    id: 0,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                    status: 'ACTIVE',
+                    agegroup_id: agegroup.id,
+                }))
+            });
+        }
+
+        return retval;
+    }
+
 
     onActivate(event) {
         console.log('Activate Event', event);
@@ -433,7 +492,15 @@ export class EventComponent {
 
     public onEventSubmit(values: Object): void {
         let event_cat = this.extractValueFromControl(values['event_category']);
-        let event_catgory = _.find(this.eventcategories, function(o) { return o.name ==event_cat });
+        let event_catgory = _.find(this.eventcategories, function (o) { return o.name == event_cat });
+
+        //AUDIENCES
+        let aud_groups = this.buildEventAttendance(values['event_group'], "GROUP");
+        let aud_trainings = this.buildEventAttendance(values['event_trg'], "TRAINING");
+        let aud_depts = this.buildEventAttendance(values['event_depart'], "DEPARTMENT");
+        let aud_age_group = this.buildEventAttendance(values['event_age'], "AGEGROUP");
+        let audiences = aud_groups.concat(aud_trainings).concat(aud_depts).concat(aud_age_group);
+        
 
         if (this.eventFormGroup.valid) {
             this.loading = true;
@@ -466,11 +533,13 @@ export class EventComponent {
                 month_to: this.extractValueFromControl(values['event_mth_to']),//[0]["text"],
                 month_from: this.extractValueFromControl(values['event_mth_from']),//[0]["text"],
                 event_category_id: event_catgory.id,
-                parish_id: this._settingsService.parish_id
+                parish_id: this._settingsService.parish_id,
+                audience: audiences
             })
             this._settingsService.saveEventDetail(regSt).subscribe(r => {
-                this.showSuccess('Event saved successfully');
                 this.getEvents();
+                this.showSuccess('Event saved successfully');
+
             });
 
         }
@@ -518,7 +587,7 @@ export class EventComponent {
     }
 
 
-     autocompleListFormatterDescrip = (data: any): SafeHtml => {
+    autocompleListFormatterDescrip = (data: any): SafeHtml => {
         let html = `<span>${data.description}</span>`;
         return this._sanitizer.bypassSecurityTrustHtml(html);
     }

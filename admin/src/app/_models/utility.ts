@@ -169,12 +169,12 @@ export class EventAudience {
     status : string;
     created_at : Date;
     updated_at : Date;
-    event_type_id : number;
-    group_id : number;
-    department_id : number;
-    training_id : number;
-    all_audience_members : boolean;
-    all_church_members : boolean;
+    event_id? : number;
+    group_id? : number;
+    department_id? : number;
+    training_id? : number;
+    all_audience_members? : boolean;
+    all_church_members? : boolean;
 }
 
 
@@ -257,3 +257,11 @@ export class GroupDepartmentMember {
 }
 
 
+export class EventWeekDays {
+    id : number;
+    status : string;
+    created_at : Date;
+    updated_at : Date;
+    week_days: string;
+    event_id? : number;
+}
