@@ -581,8 +581,6 @@ export class SettingsService {
             .catch((error : any) => Observable.throw(error.json().error || 'Server error'));
     }
 
-    
-
 
     //EventDetails methods
     saveEventDetail(event: EventDetail): Observable<EventDetail> {
