@@ -71,7 +71,7 @@ const routes: Routes = [
                 path: 'roles',
                 component: RolesComponent,
                 data: {
-                    title: 'User '
+                    title: 'Roles '
                 }
             },
             {

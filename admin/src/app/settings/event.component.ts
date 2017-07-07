@@ -368,9 +368,6 @@ export class EventComponent {
         this.month_to = value;
     }
 
-
-
-
     public start_time_changed(): void {
         console.log('Time changed to: ' + this.start_time);
     };
@@ -443,7 +440,7 @@ export class EventComponent {
         if (audtype == "TRAINING") {
             let trgs = this.trainings;
             _.forEach(value, function (item) {
-                let training = _.find(trgs , function (o) { return o.name == item['text'] });
+                let training = _.find(trgs, function (o) { return o.name == item['text'] });
                 retval.push(<EventAudience>({
                     id: 0,
                     created_at: new Date(),
@@ -457,7 +454,7 @@ export class EventComponent {
         if (audtype == "DEPARTMENT") {
             let depts = this.departments;
             _.forEach(value, function (item) {
-                let dept = _.find(depts , function (o) { return o.name == item['text'] });
+                let dept = _.find(depts, function (o) { return o.name == item['text'] });
                 retval.push(<EventAudience>({
                     id: 0,
                     created_at: new Date(),
@@ -471,7 +468,7 @@ export class EventComponent {
         if (audtype == "AGEGROUP") {
             let age_grps = this.agegroups;
             _.forEach(value, function (item) {
-                let agegroup = _.find(age_grps , function (o) { return o.name == item['text'] });
+                let agegroup = _.find(age_grps, function (o) { return o.name == item['text'] });
                 retval.push(<EventAudience>({
                     id: 0,
                     created_at: new Date(),
@@ -500,7 +497,7 @@ export class EventComponent {
         let aud_depts = this.buildEventAttendance(values['event_depart'], "DEPARTMENT");
         let aud_age_group = this.buildEventAttendance(values['event_age'], "AGEGROUP");
         let audiences = aud_groups.concat(aud_trainings).concat(aud_depts).concat(aud_age_group);
-        
+
 
         if (this.eventFormGroup.valid) {
             this.loading = true;

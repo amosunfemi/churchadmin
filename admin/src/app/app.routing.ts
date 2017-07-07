@@ -55,6 +55,15 @@ export const routes: Routes = [
         path: 'settings',
         loadChildren: './settings/settings.module#SettingsModule', canActivate: [AuthGuard]
       }
+      ,
+      {
+        path: 'people',
+        loadChildren: './people/people.module#PeopleModule', canActivate: [AuthGuard]
+      },
+      {
+        path: 'workflow',
+        loadChildren: './workflow/workflow.module#WorkModule', canActivate: [AuthGuard]
+      }
     ]
   },
   {
@@ -73,8 +82,8 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
 
